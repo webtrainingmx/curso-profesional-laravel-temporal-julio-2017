@@ -14,3 +14,9 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/home', function() {
+    return "Bienvenido al home";
+});
+
+Route::get('/museums', 'MuseumsController@index');
