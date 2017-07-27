@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Museum;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class MuseumsController extends Controller
 {
@@ -13,7 +15,7 @@ class MuseumsController extends Controller
      */
     public function index()
     {
-
+        return view("museums.index");
     }
 
     /**
@@ -29,18 +31,45 @@ class MuseumsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        //
+        $rules = [
+            'name' => 'required',
+            'description' => 'required',
+        ];
+        $messages = [
+            'name.required' => 'El campo "Name" es obligatorio',
+            'description.required' => 'El campo "Description" es obligatorio',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+        if ($validator->fails()) {
+            flash("We couldn't save your museum :(")->error();
+            return redirect()->action('MuseumsController@create')
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        $museum = new Museum();
+        $museum->name = $request->input('name');
+        $museum->description = $request->input('description');
+        $museum->phone = "";
+        $museum->rating = 4.8;
+        $museum->address = "";
+        $museum->hours = "";
+
+        $museum->save();
+        flash('Your museum has been saved!')->success();
+        return redirect()->action('MuseumsController@index');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -51,7 +80,7 @@ class MuseumsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -62,8 +91,8 @@ class MuseumsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -74,7 +103,7 @@ class MuseumsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)

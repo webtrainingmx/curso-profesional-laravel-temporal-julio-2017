@@ -24,4 +24,11 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/users', 'UsersController@index');
 Route::get('/users/{user}', 'UsersController@show');
 
-Route::resource('museums', 'MuseumsController');
+Route::get('/museums', 'MuseumsController@index');
+Route::get('/museums/create', 'MuseumsController@create');
+Route::post('/museums', 'MuseumsController@store')->name("museums.store");
+
+//Route::post('reviews/save-review','ReviewsController@saveReview')->name("reviews.saveReview")
+Route::resource('reviews', 'ReviewsController');
+
+//Route::resource('museums', 'MuseumsController');
