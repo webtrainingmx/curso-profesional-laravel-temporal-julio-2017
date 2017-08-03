@@ -15,7 +15,8 @@ class MuseumsController extends Controller
      */
     public function index()
     {
-        return view("museums.index");
+        $museums = Museum::all();
+        return view("museums.index")->with('museums', $museums);
     }
 
     /**
@@ -74,7 +75,8 @@ class MuseumsController extends Controller
      */
     public function show($id)
     {
-        //
+        $museum = Museum::findOrFail($id);
+        return view("museums.show", compact('museum'));
     }
 
     /**
