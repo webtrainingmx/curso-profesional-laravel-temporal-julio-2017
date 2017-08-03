@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Museum;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 class MuseumsController extends Controller
 {
@@ -15,7 +16,7 @@ class MuseumsController extends Controller
      */
     public function index()
     {
-        $museums = Museum::all();
+        $museums = Museum::paginate(1);
         return view("museums.index")->with('museums', $museums);
     }
 
@@ -76,6 +77,7 @@ class MuseumsController extends Controller
     public function show($id)
     {
         $museum = Museum::findOrFail($id);
+//        dd($museum->reviews);
         return view("museums.show", compact('museum'));
     }
 

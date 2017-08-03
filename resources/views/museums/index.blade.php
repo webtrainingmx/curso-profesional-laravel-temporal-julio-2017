@@ -4,6 +4,7 @@
         <div class="row">
 
             @foreach($museums as $museum)
+
                 <div class="col-xs-12 col-sm-4 col-md-4 col-lg-3">
                     <div class="b-museum">
                         @if( isset($museum->thumbnail) )
@@ -35,11 +36,18 @@
                             <div class="b-museum__ranking">
                                 <strong>Rating: </strong> {{ $museum->rating }}
                             </div>
+
+                            @if( isset($museum->user ))
+                                {{ $museum->user->name }}
+                            @endif
                         </div>
                     </div>
                 </div>
             @endforeach
 
+        </div>
+        <div class="row">
+            {{ $museums->links() }}
         </div>
     </div>
 @endsection
